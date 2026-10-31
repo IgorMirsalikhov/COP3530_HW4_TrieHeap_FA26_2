@@ -1,0 +1,147 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: p1
+      id: p1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: p1
+        setup-command: cp .test/mainHeap.cpp ./p1
+        command: g++ ./p1/*.cpp && ./a.out
+        input: ''
+        expected-output: "Level 1: -45 \nLevel 2: -4 3 \nLevel 3: 1 5 12 43 \nLevel
+          4: 2 4 6 \nLevel 1: -45 \nLevel 2: -5 3 \nLevel 3: 1 -4 12 43 \nLevel 4:
+          2 4 6 \nLevel 1: -45 \nLevel 2: -4 3 \nLevel 3: 1 6 12 43 \nLevel 4: 2 4
+          13 \nLevel 1: -45 \nLevel 2: -43 -12 \nLevel 3: -3 -4 -6 -5 \nLevel 4: -1
+          4 -2 6 3 12 -4 43 \nLevel 5: 1 2 4 45 13"
+        comparison-method: exact
+        timeout: 10
+        max-score: 36
+    - name: p2
+      id: p2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: p2
+        setup-command: cp .test/mainTrie.cpp ./p2
+        command: g++ p2/*.cpp && ./a.out
+        input: ''
+        expected-output: |-
+          Empty: 0
+          Longest: 13
+          Count: 10
+          computation
+          compute
+          computer
+          computers
+          computing
+          internal
+          international
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'compute'
+          Longest: 13
+          Count: 9
+          computation
+          computer
+          computers
+          computing
+          internal
+          international
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'computer'
+          Longest: 13
+          Count: 8
+          computation
+          computers
+          computing
+          internal
+          international
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'computers'
+          Longest: 13
+          Count: 7
+          computation
+          computing
+          internal
+          international
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'computing'
+          Longest: 13
+          Count: 6
+          computation
+          internal
+          international
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'computation'
+          Longest: 13
+          Count: 5
+          internal
+          international
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'international'
+          Longest: 8
+          Count: 4
+          internal
+          internet
+          interval
+          into
+          -----------------
+          Deleting 'internet'
+          Longest: 8
+          Count: 3
+          internal
+          interval
+          into
+          -----------------
+          Deleting 'internal'
+          Longest: 8
+          Count: 2
+          interval
+          into
+          -----------------
+          Deleting 'interval'
+          Longest: 4
+          Count: 1
+          into
+          -----------------
+          Deleting 'into'
+          Empty: 1
+        comparison-method: exact
+        timeout: 10
+        max-score: 36
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        P1_RESULTS: "${{steps.p1.outputs.result}}"
+        P2_RESULTS: "${{steps.p2.outputs.result}}"
+      with:
+        runners: p1,p2
