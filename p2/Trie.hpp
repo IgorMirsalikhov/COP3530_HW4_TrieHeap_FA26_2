@@ -15,6 +15,7 @@ public:
     
 private:
     TrieNode* root;
+    int word_count;
     void print(const TrieNode* node, std::string& word) const;
 };
 
