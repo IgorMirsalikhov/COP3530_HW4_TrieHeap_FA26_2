@@ -19,7 +19,7 @@ private:
     int getLeftChild(int index) const;
     int getRightChild(int index) const;
     void percolateUp(int index); // Think or implement
-    void percolateDown();
+    void percolateDown(int index);
     void swap(T& v1, T& v2);
 };
 
