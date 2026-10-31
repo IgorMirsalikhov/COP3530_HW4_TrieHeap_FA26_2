@@ -1,5 +1,4 @@
 #include "MinHeap.hpp"
-#include "MinHeap.cpp"
 
 #include <vector>
 
