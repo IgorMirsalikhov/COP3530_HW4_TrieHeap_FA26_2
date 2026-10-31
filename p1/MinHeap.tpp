@@ -105,24 +105,8 @@ T MinHeap<T>::deleteMin() {
     percolateDown();
 }
 
-template <typename T>
-void MinHeap<T>::percolateDown() {
-    // Start from the root
-    
-   
-
-    // If there are no children stop iteration
-
-    // Find the smallest child
-
-    // If current value > value of the smallest child - swap the values
-    // If not - break
-}
-
 template<typename T>
 void MinHeap<T>::percolateDown(int index) {
-    // Start from the root
-    int index = 0;
     while (true) {
          // Find chidren of the current node
         int left = getLeftChild(index);
