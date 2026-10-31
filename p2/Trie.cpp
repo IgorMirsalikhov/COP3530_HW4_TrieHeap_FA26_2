@@ -1,31 +1,67 @@
 #include "Trie.hpp"
 #include <string>
-#include <cctype>
+#include <iostream>
 
-Trie::Trie() {
-    root = new TrieNode();
+Trie::Trie() : word_count(0) {
+    root = new TrieNode;
 }
 
-void Trie::insert(const std::string& s) {
+void Trie::insert(const std::string& word) {
     TrieNode* cur = root;
-    for (char c : s) {
-        if (!isalpha(c)) {
-            continue;
-        }
-        int i = tolower(c) - 'a';
-        if (!cur->children[i]) {
-            cur->children[i] = new TrieNode();
+    
+    for (char c : word) {
+        int i = letterToIndex(c);
+    
+        if (cur->children[i] == nullptr) {
+            cur->children[i] = new TrieNode;
         }
         cur = cur->children[i];
     }
-    cur->end_of_word = true;
+
+    if (!cur->end_of_word) {
+        cur->end_of_word = true;
+        word_count++;
+    }
+
 }
 
-bool Trie::search(const std::string& s) const {
-    TrieNode* cur = root;
 
-    for (char c : s) {
-        int i = tolower(c) - 'a';
+void Trie::print() const {
+    std::string s;
+    print(root, s);
+}
+
+void Trie::print(const TrieNode* node, std::string& s) const {
+    if (!node) {
+        return;
+    }
+    else if (node->end_of_word) {
+        std::cout << s << std::endl;
+    }
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+        if (!node->children[i]) {
+            continue;
+        }
+        s += IndexToLetter(i);
+        print(node->children[i], s);
+        s.pop_back();
+    }
+}
+
+int Trie::letterToIndex(char c) const {
+    return c - 'a';
+}
+
+char Trie::IndexToLetter(int i) const {
+    return 'a' + i;
+}
+
+
+bool Trie::contains(const std::string& word) const {
+    const TrieNode* cur = root;
+    for (char c : word) {
+        int i = letterToIndex(c);
+
         if (!cur->children[i]) {
             return false;
         }
@@ -33,26 +69,4 @@ bool Trie::search(const std::string& s) const {
     }
 
     return cur->end_of_word;
-}
-
-void Trie::print() const {
-    std::string word;
-    print(root, word);
-}
-
-void Trie::print(const TrieNode* node, std::string& word) const {
-    if (!node) {
-        return;
-    }
-    if (node->end_of_word) {
-        std::cout << word << std::endl;
-    }
-
-    // Check all children
-    // If child exist
-        // add character to the end of the word
-        // recursion
-        // remove the last character from the word
-
-
 }
