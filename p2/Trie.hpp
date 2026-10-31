@@ -2,6 +2,7 @@
 #define TRIE_HPP
 
 #include <string>
+#include <vector>
 #include "TrieNode.hpp"
 
 class Trie {
